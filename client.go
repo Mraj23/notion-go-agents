@@ -9,20 +9,53 @@ import (
 	"time"
 )
 
+type ClientOption func(*Client)
+
 type Client struct {
 	httpClient    *http.Client
 	apiKey        string
 	notionVersion string
+	timeout       time.Duration
 }
 
-func NewClient(apiKey, notionVersion string) *Client {
+func NewClient(apiKey, notionVersion string, opts ...ClientOption) *Client {
 	if notionVersion == "" {
 		notionVersion = "2022-06-28"
 	}
-	return &Client{
-		httpClient:    &http.Client{Timeout: 30 * time.Second},
+	c := &Client{
 		apiKey:        apiKey,
 		notionVersion: notionVersion,
+		timeout:       30 * time.Second,
+	}
+	for _, opt := range opts {
+		opt(c)
+	}
+	if c.httpClient == nil {
+		c.httpClient = &http.Client{}
+	}
+	if c.timeout > 0 {
+		c.httpClient.Timeout = c.timeout
+	} else if c.httpClient.Timeout == 0 {
+		c.httpClient.Timeout = 30 * time.Second
+	}
+	return c
+}
+
+func WithHTTPClient(h *http.Client) ClientOption {
+	return func(c *Client) {
+		c.httpClient = h
+		if c.timeout > 0 && c.httpClient != nil {
+			c.httpClient.Timeout = c.timeout
+		}
+	}
+}
+
+func WithTimeout(d time.Duration) ClientOption {
+	return func(c *Client) {
+		c.timeout = d
+		if c.httpClient != nil {
+			c.httpClient.Timeout = d
+		}
 	}
 }
 
