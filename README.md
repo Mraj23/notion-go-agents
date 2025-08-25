@@ -23,6 +23,9 @@ Environment variables:
 NOTION_API_KEY (required)
 NOTION_VERSION (optional, defaults to 2022-06-28)
 
+More examples
+examples/database/main.go — Search a Notion database with SearchNotionDatabase.
+
 Quick Start
 
 ```go
