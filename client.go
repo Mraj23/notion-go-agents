@@ -9,12 +9,15 @@ import (
 	"time"
 )
 
+// Client wraps basic HTTP calls to the Notion API.
 type Client struct {
 	httpClient    *http.Client
 	apiKey        string
 	notionVersion string
 }
 
+// NewClient creates a Notion API client. If notionVersion is empty,
+// the default version `2022-06-28` is used.
 func NewClient(apiKey, notionVersion string) *Client {
 	if notionVersion == "" {
 		notionVersion = "2022-06-28"

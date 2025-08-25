@@ -9,6 +9,8 @@ import (
 	"net/http"
 )
 
+// SearchPages queries the Notion search API and returns page IDs.
+// The limit parameter restricts the number of page IDs returned (0 means no limit).
 func (c *Client) SearchPages(ctx context.Context, req NotionSearchRequest, limit int) ([]string, error) {
 	bts, _ := json.Marshal(req)
 	resp, err := c.request(ctx, http.MethodPost, "/v1/search", bytes.NewReader(bts))
@@ -41,6 +43,7 @@ func (c *Client) SearchPages(ctx context.Context, req NotionSearchRequest, limit
 	return ids, nil
 }
 
+// GetPage fetches metadata for a Notion page by its ID.
 func (c *Client) GetPage(ctx context.Context, pageID string) (*NotionPage, error) {
 	path := "/v1/pages/" + pageID
 	resp, err := c.request(ctx, http.MethodGet, path, nil)
@@ -59,6 +62,7 @@ func (c *Client) GetPage(ctx context.Context, pageID string) (*NotionPage, error
 	return &pg, nil
 }
 
+// QueryDatabase runs a query against a Notion database and returns the raw response.
 func (c *Client) QueryDatabase(ctx context.Context, databaseID string, req NotionDatabaseQueryRequest) (*NotionDatabaseQueryResponse, error) {
 	path := "/v1/databases/" + databaseID + "/query"
 	bts, err := json.Marshal(req)

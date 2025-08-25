@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+// NotionMarkdownConverter turns Notion block trees into Markdown text.
 type NotionMarkdownConverter struct {
 	client   *Client
 	maxDepth int
@@ -29,6 +30,7 @@ type BlockNode struct {
 	Children []BlockNode
 }
 
+// ConvertPageToMarkdown retrieves blocks for a page and renders them to Markdown.
 func (c *NotionMarkdownConverter) ConvertPageToMarkdown(ctx context.Context, pageID string) (string, error) {
 	blocks, err := c.getBlockTree(ctx, pageID, 0)
 	if err != nil {
