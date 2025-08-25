@@ -22,3 +22,14 @@ Share the relevant pages/databases with the integration.
 Environment variables:
 NOTION_API_KEY (required)
 NOTION_VERSION (optional, defaults to 2022-06-28)
+
+Quick Start
+
+```go
+client := notion.NewClient(
+    os.Getenv("NOTION_API_KEY"),
+    os.Getenv("NOTION_VERSION"),
+    notion.WithTimeout(10*time.Second),
+    // notion.WithHTTPClient(customHTTPClient),
+)
+```
