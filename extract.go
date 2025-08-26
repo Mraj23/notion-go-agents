@@ -2,6 +2,7 @@ package notion
 
 import "strings"
 
+// ExtractNotionTitle finds the first title-like property and returns its plain text.
 func ExtractNotionTitle(props map[string]any) string {
 	if props == nil {
 		return ""
@@ -52,6 +53,8 @@ func ExtractNotionTitle(props map[string]any) string {
 	return ""
 }
 
+// SelectPrintableProperties filters properties to those suitable for display.
+// It keeps titles and a subset of types like status, date, number, url and select fields.
 func SelectPrintableProperties(props map[string]any) map[string]any {
 	out := make(map[string]any)
 	for k, v := range props {

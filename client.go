@@ -18,6 +18,9 @@ type Client struct {
 	timeout       time.Duration
 }
 
+// NewClient creates a Notion API client.
+// If notionVersion is empty, the default version `2022-06-28` is used.
+// Additional configuration can be provided via functional options.
 func NewClient(apiKey, notionVersion string, opts ...ClientOption) *Client {
 	if notionVersion == "" {
 		notionVersion = "2022-06-28"
